@@ -14,12 +14,10 @@ def post_install(command_subclass):
 
         ## the code to run after install
         d = os.path.dirname(os.path.realpath(__file__)) + "/clavin/"
-        subprocess.call(["curl", "-L", "https://github.com/DanielJDufour/CLAVIN/tarball/3.0", "-o", "clavin-java.tar.gz"], cwd=d)
-        subprocess.call(["tar", "-xvzf", "clavin-java.tar.gz"], cwd=d)
-        subprocess.call(["rm", "clavin-java.tar.gz"], cwd=d)
-        os.rename(d+next(f for f in os.listdir(d) if "DanielJDufour-CLAVIN-" in f),d+"clavin-java")
-        subprocess.call("./script/ci/run_build.sh", cwd=d+"clavin-java")
-
+        subprocess.call(["wget", "https://s3.amazonaws.com/clavinzip/CLAVIN.zip"], cwd=d)
+        subprocess.call(["unzip", "CLAVIN.zip"], cwd=d)
+        subprocess.call(["rm", "CLAVIN.zip"], cwd=d)
+        os.rename(d+"/CLAVIN",d+"clavin-java")
 
     command_subclass.run = modified_run
     return command_subclass
