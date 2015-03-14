@@ -14,10 +14,11 @@ def post_install(command_subclass):
 
         ## the code to run after install
         d = os.path.dirname(os.path.realpath(__file__)) + "/clavin/"
-        subprocess.call(["wget", "https://s3.amazonaws.com/clavinzip/CLAVIN.zip"], cwd=d)
-        subprocess.call(["unzip", "CLAVIN.zip"], cwd=d)
-        subprocess.call(["rm", "CLAVIN.zip"], cwd=d)
-        os.rename(d+"/CLAVIN",d+"clavin-java")
+        if "clavin-java" not in os.listdir(d):
+            subprocess.call(["wget", "https://s3.amazonaws.com/clavinzip/CLAVIN.zip"], cwd=d)
+            subprocess.call(["unzip", "CLAVIN.zip"], cwd=d)
+            subprocess.call(["rm", "CLAVIN.zip"], cwd=d)
+            os.rename(d+"/CLAVIN",d+"clavin-java")
 
     command_subclass.run = modified_run
     return command_subclass
